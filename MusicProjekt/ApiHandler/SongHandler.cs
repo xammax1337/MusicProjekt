@@ -8,15 +8,15 @@ namespace MusicProjekt.ApiHandler
     public class SongHandler
     {
 
-        public static IResult AddSongToUser(IDbHelper dbHelper, int userId, int songId)
+        public static IResult ConnectSongToUser(IDbHelper dbHelper, int userId, int songId)
         {
-            dbHelper.AddSongToUser(userId, songId);
+            dbHelper.ConnectSongToUser(userId, songId);
             return Results.StatusCode((int)HttpStatusCode.Created);
         }
 
         public static IResult ListUserSongs (IDbHelper dbHelper, int userId)
         {
-            var userSongs = dbHelper.GetUserSongs(userId);
+            var userSongs = dbHelper.ListUserSongs(userId);
             return Results.Json(userSongs);
         }
     }

@@ -17,8 +17,8 @@ namespace MusicProjekt
             var app = builder.Build();
 
             //Max Methods
-            app.MapGet("/{userId}", SongHandler.ListUserSongs);
-            app.MapPost("/{userId}/{songId}", SongHandler.AddSongToUser);
+            app.MapGet("/user/{userId}", SongHandler.ListUserSongs);
+            app.MapPost("/user/{userId}/song/{songId}", SongHandler.ConnectSongToUser);
 
             app.Run();
         }

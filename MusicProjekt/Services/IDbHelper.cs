@@ -8,8 +8,8 @@ namespace MusicProjekt.Services
 {
     public interface IDbHelper
     {
-        List<SongUserViewModel> GetUserSongs(int userId);
-        void AddSongToUser(int userId, int songId); 
+        List<SongUserViewModel> ListUserSongs(int userId);
+        void ConnectSongToUser(int userId, int songId); 
     }
 
     public class DbHelper : IDbHelper
@@ -23,7 +23,7 @@ namespace MusicProjekt.Services
 
 
         // Connect a Song to a User
-        public void AddSongToUser(int userId, int songId)
+        public void ConnectSongToUser(int userId, int songId)
         {
             User? user = _context.Users
                 .Include(u => u.Songs)
@@ -47,7 +47,7 @@ namespace MusicProjekt.Services
         }
 
         // List all Songs for a Specific User
-        public List<SongUserViewModel> GetUserSongs(int userId) 
+        public List<SongUserViewModel> ListUserSongs(int userId) 
         {
             List<SongUserViewModel> userSongs = _context.Users
                 .Where(u => u.UserId == userId)
