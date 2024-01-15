@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MusicProjekt.Models;
 using MusicProjekt.Data;
+using MusicProjekt.Models;
+using MusicProjekt.Models.ViewModel;
 
 namespace MusicProjekt.Data
 {
@@ -10,6 +11,7 @@ namespace MusicProjekt.Data
         public DbSet<Artist> Artists { get; set; }
         public DbSet<Genre> Genres { get; set; }
         public DbSet<Song> Songs { get; set; }
+
 
         public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options) { }
     }
