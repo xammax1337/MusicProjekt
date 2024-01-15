@@ -123,12 +123,21 @@ namespace MusicProjekt.Services
         {
             User? user = _context.Users
                 .Include(u => u.Songs)
+                .SingleOrDefault(u => u.UserId == userId);
                 
             Song? song = _context.Songs
                 .SingleOrDefault(s => s.SongId == songId);
 
             if (song == null)
-                        user.Songs.Add(song);
+            {
+                Results.NotFound();
+            }
+
+            if (user == null)
+            {
+                Results.NotFound();
+            }
+            user.Songs.Add(song);
             _context.SaveChanges();
         }
 

@@ -3,8 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using MusicProjekt.Services;
 using MusicProjekt.ApiHandler;
 using MusicProjekt.Data;
-using MusicProjekt.ApiHandler;
-using MusicProjekt.Services;
 using MusicProjekt.Models;
 using MusicProjekt.Models.Dtos;
 using System.Net.Http;
