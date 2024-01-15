@@ -1,8 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using MusicProjekt.Data;
 using MusicProjekt.Models;
+using MusicProjekt.Models.Dtos;
+using MusicProjekt.Services;
+using MusicProjekt.ApiHandler;
 
-namespace MusicProjekt
+namespace MusicProjekt.ApiHandler
 {
     public class Program
     {
@@ -11,9 +14,11 @@ namespace MusicProjekt
             var builder = WebApplication.CreateBuilder(args);
             string connectionString = builder.Configuration.GetConnectionString("ApplicationContext");
             builder.Services.AddDbContext<ApplicationContext>(opt => opt.UseSqlServer(connectionString));
+            builder.Services.AddScoped<IDbHelper, DbHelper>();
             var app = builder.Build();
-
-            app.MapGet("/", () => "Hello World!");
+            
+            app.MapGet("/user", ApiHandler.ListUsers);
+            app.MapPost("/song", ApiHandler.AddSong);
 
             app.Run();
         }
