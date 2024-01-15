@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using MusicProjekt.Services;
 using MusicProjekt.ApiHandler;
 using MusicProjekt.Data;
+using MusicProjekt.ApiHandler;
+using MusicProjekt.Services;
 using MusicProjekt.Models;
 using MusicProjekt.Models.Dtos;
 using System.Net.Http;
@@ -35,6 +37,9 @@ namespace MusicProjekt
             
             app.MapGet("/genre/{userId}",GenreHandler.ListGenres);
             app.MapPost("/user/{userId}/genre/{genreId}",GenreHandler.ConnectUsersToGenres);
+          
+            app.MapGet("/user/{userId}", SongHandler.ListUserSongs);
+            app.MapPost("/user/{userId}/song/{songId}", SongHandler.ConnectSongToUser);
             
 
 

@@ -4,19 +4,21 @@ using MusicProjekt.Models;
 using MusicProjekt.Models.Dtos;
 using MusicProjekt.Models.ViewModel;
 
-
 namespace MusicProjekt.Services
 {
 
     public interface IDbHelper
     {
+
+        List<SongUserViewModel> ListUserSongs(int userId);
+        void ConnectSongToUser(int userId, int songId); 
+
         void AddUser(UserDto user);
         List<ArtistViewModel> ListUsersArtists(int userId);
         void ConnectUserToArtist(int userId, int songId);
 
         List<ListGenreViewModel> GetAllGenresForUser( int userId);
         void AddGenreForUser( int genreId,int userId);
-
 
     }
 
@@ -44,6 +46,29 @@ namespace MusicProjekt.Services
             });
             _context.SaveChanges();
         }
+        
+        public void ConnectUserToArtist(int userId, int artistId)
+        {
+            User? user = _context.Users
+                .Include (u => u.Artists)
+                .SingleOrDefault (u => u.UserId == userId);
+
+            if (user == null)
+            {
+                Results.NotFound();
+            }
+            
+            Artist? artist = _context.Artists
+                .SingleOrDefault(a => a.ArtistId == artistId);
+
+            if (user.Artists == null)
+            {
+                Results.NotFound();
+            }
+            user.Artists.Add(artist);
+            _context.SaveChanges();
+        }
+       
         public List<ArtistViewModel> ListUsersArtists(int userId)
         {
             User? user = _context.Users
@@ -54,7 +79,6 @@ namespace MusicProjekt.Services
             {
                 Results.NotFound();
             }
-
             if (user.Artists == null)
             {
                 Results.NotFound();
@@ -68,29 +92,42 @@ namespace MusicProjekt.Services
 
             return result;
         }
-
-        public void ConnectUserToArtist(int userId, int artistId)
+        
+        
+        // Connect a Song to a User
+        public void ConnectSongToUser(int userId, int songId)
         {
             User? user = _context.Users
-                .Include (u => u.Artists)
-                .SingleOrDefault (u => u.UserId == userId);
+                .Include(u => u.Songs)
+                
+            Song? song = _context.Songs
+                .SingleOrDefault(s => s.SongId == songId);
 
-            if (user == null)
-            {
-                Results.NotFound();
-            }
-
-            Artist? artist = _context.Artists
-                .SingleOrDefault(a => a.ArtistId == artistId);
-
-            if (user.Artists == null)
-            {
-                Results.NotFound();
-            }
-            user.Artists.Add(artist);
+            if (song == null)
+                        user.Songs.Add(song);
             _context.SaveChanges();
         }
 
+        // List all Songs for a Specific User
+        public List<SongUserViewModel> ListUserSongs(int userId) 
+        {
+            List<SongUserViewModel> userSongs = _context.Users
+                .Where(u => u.UserId == userId)
+                .Include(u => u.Songs)
+                .SelectMany(u => u.Songs)
+                .Join(
+                    _context.Artists,
+                    song => song.ArtistId,
+                    artist => artist.ArtistId,
+                    (song, artist) => new SongUserViewModel 
+                    {
+                        Title = song.Title,
+                        ArtistName = artist.ArtistName
+                    })
+                .ToList();
+
+            return userSongs;
+        }
 
         public List<ListGenreViewModel> GetAllGenresForUser(int userId)
         {
