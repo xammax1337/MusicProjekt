@@ -11,8 +11,7 @@ using System.Net.Http;
 using System.Text.Json;
 
 
-
-namespace MusicProjekt
+namespace MusicProjekt.ApiHandler
 {
     public class Program
     {
@@ -32,6 +31,8 @@ namespace MusicProjekt
 
 
             app.MapPost("/newUser", UserHandler.AddUser);
+            app.MapGet("/user", ApiHandler.ListAllUsers);
+          
             app.MapGet("/artist/{userId}", ArtistHandler.ListUsersArtists);
             app.MapPost("/user/{userId}/artist/{artistId}", ArtistHandler.ConnectUserToArtist);
             
@@ -40,7 +41,11 @@ namespace MusicProjekt
           
             app.MapGet("/user/{userId}", SongHandler.ListUserSongs);
             app.MapPost("/user/{userId}/song/{songId}", SongHandler.ConnectSongToUser);
+          
             
+            app.MapPost("/song", ApiHandler.AddSong);
+            
+
 
 
 

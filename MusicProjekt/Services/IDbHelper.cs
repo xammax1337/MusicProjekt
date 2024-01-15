@@ -1,14 +1,20 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MusicProjekt.Data;
 using MusicProjekt.Models;
-using MusicProjekt.Models.Dtos;
 using MusicProjekt.Models.ViewModel;
+using System.Collections.Generic;
+using System.Linq;
+using MusicProjekt.Models.Dtos;
+
 
 namespace MusicProjekt.Services
 {
 
     public interface IDbHelper
     {
+
+        List<ListUserViewModel> ListAllUsers();
+        void AddSong(AddSongDto song);
 
         List<SongUserViewModel> ListUserSongs(int userId);
         void ConnectSongToUser(int userId, int songId); 
@@ -25,13 +31,31 @@ namespace MusicProjekt.Services
 
     public class DbHelper : IDbHelper
     {
-        private ApplicationContext _context;
-
+        private readonly ApplicationContext _context;
         public DbHelper(ApplicationContext context)
         {
             _context = context;
         }
+        
+        public List<ListUserViewModel> ListAllUsers()
+        {
+            return _context.Users
+                .Select(u => new ListUserViewModel { UserId = u.UserId, UserName = u.UserName })
+                .ToList();
+        }
 
+        public void AddSong(AddSongDto song)
+        {
+            var newSong = new Song
+            {
+                Title = song.Title,
+                ArtistId = song.ArtistId,
+                GenreId = song.GenreId,
+                
+            };
+            _context.Songs.Add(newSong);
+            _context.SaveChanges();
+        }
 
         public void AddUser(UserDto user)
         {
@@ -169,5 +193,4 @@ namespace MusicProjekt.Services
         
     }
 }
-
 
