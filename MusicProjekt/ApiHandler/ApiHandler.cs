@@ -1,11 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using MusicProjekt.Data;
+using MusicProjekt.Models;
 using MusicProjekt.Models.Dtos;
+using MusicProjekt.Models.ViewModel;
+using Microsoft.AspNetCore.Mvc; //?
 using MusicProjekt.Services;
 using System.Net;
 
 namespace MusicProjekt.ApiHandler
 {
-    public class ApiHandler
+    public static class ApiHandler
     {
        
         public static IResult ListUsersGenres(IDbHelper dbHelper, int genreId,int userId)
