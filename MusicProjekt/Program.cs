@@ -26,22 +26,22 @@ namespace MusicProjekt.ApiHandler
            
             app.MapGet("/", () => "Hello World!");
 
-
+        
 
             app.MapPost("/newUser", UserHandler.AddUser);
-            app.MapGet("/user", ApiHandler.ListAllUsers);
+            app.MapGet("/user", UserHandler.ListAllUsers);
           
             app.MapGet("/artist/{userId}", ArtistHandler.ListUsersArtists);
             app.MapPost("/user/{userId}/artist/{artistId}", ArtistHandler.ConnectUserToArtist);
             
-            app.MapGet("/genre/{userId}",GenreHandler.ListGenres);
-            app.MapPost("/user/{userId}/genre/{genreId}",GenreHandler.ConnectUsersToGenres);
+            app.MapGet("/genre/{userId}",GenreHandler.ListUsersGenres);
+            app.MapPost("/user/{userId}/genre/{genreId}",GenreHandler.ConnectUserToGenre);
           
             app.MapGet("/user/{userId}", SongHandler.ListUserSongs);
             app.MapPost("/user/{userId}/song/{songId}", SongHandler.ConnectSongToUser);
           
             
-            app.MapPost("/song", ApiHandler.AddSong);
+            app.MapPost("/song", SongHandler.AddSong);
             
 
 

@@ -6,16 +6,16 @@ namespace MusicProjekt.ApiHandler
 {
     public class GenreHandler
     {
-        public static IResult ListGenres(IDbHelper dbHelper,  int userId)
+        public static IResult ListUsersGenres(IDbHelper dbHelper,  int userId)
         {
             var genres = dbHelper.GetAllGenresForUser(userId);
             return Results.Json(genres);
 
 
         }
-        public static IResult ConnectUsersToGenres(IDbHelper dbHandler, int userId, int genreId)
+        public static IResult ConnectUserToGenre(IDbHelper dbHelper, int userId, int genreId)
         {
-            dbHandler.AddGenreForUser(genreId, userId);
+            dbHelper.AddGenreForUser(genreId, userId);
             return Results.StatusCode((int)HttpStatusCode.Created);
 
 
