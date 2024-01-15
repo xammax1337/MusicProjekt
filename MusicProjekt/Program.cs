@@ -17,9 +17,9 @@ namespace MusicProjekt.ApiHandler
             builder.Services.AddScoped<IDbHelper, DbHelper>();
             var app = builder.Build();
             
-            app.MapGet("/user", ApiHandler.ListUsers);
+            app.MapGet("/user", ApiHandler.ListAllUsers);
             app.MapPost("/song", ApiHandler.AddSong);
-
+            
             app.Run();
         }
     }

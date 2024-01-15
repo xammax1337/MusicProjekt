@@ -10,7 +10,7 @@ namespace MusicProjekt.Services
 {
     public interface IDbHelper
     {
-        List<ListUserViewModel> GetAllUsers();
+        List<ListUserViewModel> ListAllUsers();
         void AddSong(AddSongDto song);
     }
 
@@ -21,7 +21,7 @@ namespace MusicProjekt.Services
         {
             _context = context;
         }
-        public List<ListUserViewModel> GetAllUsers()
+        public List<ListUserViewModel> ListAllUsers()
         {
             return _context.Users
                 .Select(u => new ListUserViewModel { UserId = u.UserId, UserName = u.UserName })
