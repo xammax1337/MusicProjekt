@@ -1,5 +1,6 @@
 ﻿using MusicProjekt.Data;
 using MusicProjekt.Models;
+using MusicProjekt.Models.Dtos;
 using MusicProjekt.Services;
 using System.Net;
 
@@ -18,6 +19,11 @@ namespace MusicProjekt.ApiHandler
         {
             var userSongs = dbHelper.ListUserSongs(userId);
             return Results.Json(userSongs);
+        }
+        public static IResult AddSong(IDbHelper dbHelper, AddSongDto song)
+        {
+            dbHelper.AddSong(song);
+            return Results.StatusCode((int)HttpStatusCode.Created);
         }
     }
 }

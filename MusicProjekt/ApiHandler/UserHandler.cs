@@ -11,5 +11,10 @@ namespace MusicProjekt.ApiHandler
             dbHelper.AddUser(user);
             return Results.StatusCode((int)HttpStatusCode.Created);
         }
+        public static IResult ListAllUsers(IDbHelper dbHelper)
+        {
+            var users = dbHelper.ListAllUsers();
+            return Results.Json(users);
+        }
     }
 }
