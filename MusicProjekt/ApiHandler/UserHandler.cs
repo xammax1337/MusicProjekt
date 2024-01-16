@@ -8,8 +8,22 @@ namespace MusicProjekt.ApiHandler
     {
         public static IResult AddUser(IDbHelper dbHelper, UserDto user)
         {
-            dbHelper.AddUser(user);
-            return Results.StatusCode((int)HttpStatusCode.Created);
+            if (string.IsNullOrEmpty(user.UserName))
+            {
+                return Results.BadRequest(new { Message = "User must have a username" });
+            }
+
+            if (dbHelper.UserExists(user.UserName))
+            {
+                return Results.BadRequest(new { Message = "Username already exists" });
+            }
+
+            else
+            {
+                dbHelper.AddUser(user);
+                return Results.StatusCode((int)HttpStatusCode.Created);
+            }
+
         }
         public static IResult ListAllUsers(IDbHelper dbHelper)
         {
