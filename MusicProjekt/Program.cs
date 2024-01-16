@@ -28,16 +28,16 @@ namespace MusicProjekt.ApiHandler
 
         
 
-            app.MapPost("/newUser", UserHandler.AddUser);
-            app.MapGet("/user", UserHandler.ListAllUsers);
+            app.MapPost("/newUser", UserHandler.AddUser); 
+            app.MapGet("/user", UserHandler.ListAllUsers); 
           
-            app.MapGet("/artist/{userId}", ArtistHandler.ListUsersArtists);
-            app.MapPost("/user/{userId}/artist/{artistId}", ArtistHandler.ConnectUserToArtist);
+            app.MapGet("/artist/{userId}", ArtistHandler.ListUsersArtists); 
+            app.MapPost("/user/{userId}/artist/{artistId}", ArtistHandler.ConnectUserToArtist); 
             
-            app.MapGet("/genre/{userId}",GenreHandler.ListUsersGenres);
+            app.MapGet("/genre/{userId}",GenreHandler.ListUsersGenres); 
             app.MapPost("/user/{userId}/genre/{genreId}",GenreHandler.ConnectUserToGenre);
           
-            app.MapGet("/user/{userId}", SongHandler.ListUserSongs);
+            app.MapGet("/song/{userId}", SongHandler.ListUserSongs);
             app.MapPost("/user/{userId}/song/{songId}", SongHandler.ConnectSongToUser);
           
             
