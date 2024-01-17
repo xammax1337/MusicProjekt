@@ -5,7 +5,7 @@ using MusicProjekt.Models.ViewModel;
 using System.Collections.Generic;
 using System.Linq;
 using MusicProjekt.Models.Dtos;
-
+using Microsoft.IdentityModel.Protocols;
 
 namespace MusicProjekt.Services
 {
@@ -206,6 +206,25 @@ namespace MusicProjekt.Services
 
         public void AddSong(AddSongDto song)
         {
+
+            if (string.IsNullOrEmpty(song.Title))
+            {
+                throw new Exception("Song must have a title");
+            }
+
+            //Retrieve artist and genre from our database, to enable exception
+            var artist = _context.Artists.Find(song.ArtistId);
+            var genre = _context.Genres.Find(song.GenreId);
+
+            if (artist == null)
+            {
+                throw new Exception("Artist not found");
+            }
+            if (genre == null)
+            {
+                throw new Exception("Genre not found");
+            }
+
             var newSong = new Song
             {
                 Title = song.Title,
