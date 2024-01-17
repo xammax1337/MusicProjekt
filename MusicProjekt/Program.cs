@@ -7,6 +7,8 @@ using MusicProjekt.Models;
 using MusicProjekt.Models.Dtos;
 using System.Net.Http;
 using System.Text.Json;
+using MusicProjekt.Models.ViewModel;
+using Microsoft.AspNetCore.Mvc;
 
 
 namespace MusicProjekt.ApiHandler
@@ -15,9 +17,9 @@ namespace MusicProjekt.ApiHandler
     {
         public static void Main(string[] args)
         {
-
-
             var builder = WebApplication.CreateBuilder(args);
+
+            builder.Services.AddScoped<IDiscographyService, DiscographyService>();
 
             string connectionString = builder.Configuration.GetConnectionString("ApplicationContext");
             builder.Services.AddDbContext<ApplicationContext>(opt => opt.UseSqlServer(connectionString));
@@ -42,11 +44,33 @@ namespace MusicProjekt.ApiHandler
           
             
             app.MapPost("/song", SongHandler.AddSong);
-            
 
+            //Test map
+            app.MapGet("album/{artist}", async (string artist, IDiscographyService DiscographyService) =>
+            {
+                try
+                {
+                    DiscographyDto testApi = await DiscographyService.GetAlbumAsync(artist);
 
+                    List<DiscographyDto.Album> albums = testApi?.Albums;
 
+                    DiscographyViewModel result = new DiscographyViewModel
+                    {
+                        ViewAlbums = albums?.Select(dtoAlbum => new DiscographyViewModel.ViewAlbum
+                        {
+                            StrAlbum = dtoAlbum.StrAlbum,
+                            IntYearReleased = dtoAlbum.IntYearReleased
+                        }).ToList()
+                    };
 
+                    return Results.Json(result);
+                }
+                catch (Exception ex)
+                {
+                    // Handle exceptions appropriately
+                    return Results.Json(new { ErrorMessage = ex.Message });
+                }
+            });
             app.Run();
         }
     }
