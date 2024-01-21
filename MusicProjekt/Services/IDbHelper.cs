@@ -156,12 +156,15 @@ namespace MusicProjekt.Services
         public List<SongUserViewModel> ListUserSongs(int userId)
         {
             User? user = _context.Users
+                .Include(u => u.Songs)
                 .SingleOrDefault(u => u.UserId == userId);
 
-            List<SongUserViewModel> userSongs = _context.Users
-                .Where(u => u.UserId == userId)
-                .Include(u => u.Songs)
-                .SelectMany(u => u.Songs)
+            if (user == null)
+            {
+                throw new Exception("User not found");
+            }
+
+            List<SongUserViewModel> userSongs = user.Songs
                 .Join(
                     _context.Artists,
                     song => song.ArtistId,
@@ -172,11 +175,6 @@ namespace MusicProjekt.Services
                         ArtistName = artist.ArtistName
                     })
                 .ToList();
-
-            if (user == null)
-            {
-                throw new Exception("User not found");
-            }
 
             return userSongs;
         }
