@@ -1,4 +1,5 @@
-﻿using MusicProjekt.Models.Dtos;
+﻿using MusicProjekt.Models;
+using MusicProjekt.Models.Dtos;
 using MusicProjekt.Services;
 using System.Net;
 
@@ -8,20 +9,14 @@ namespace MusicProjekt.ApiHandler
     {
         public static IResult AddUser(IDbHelper dbHelper, UserDto user)
         {
-            if (string.IsNullOrEmpty(user.UserName))
-            {
-                return Results.BadRequest(new { Message = "User must have a username" });
-            }
-
-            if (dbHelper.UserExists(user.UserName))
-            {
-                return Results.BadRequest(new { Message = "Username already exists" });
-            }
-
-            else
+            try
             {
                 dbHelper.AddUser(user);
                 return Results.StatusCode((int)HttpStatusCode.Created);
+            }
+            catch (Exception ex)
+            {
+                return Results.NotFound(new { Message = ex.Message });
             }
 
         }
