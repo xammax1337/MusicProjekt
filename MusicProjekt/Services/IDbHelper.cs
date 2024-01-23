@@ -44,8 +44,18 @@ namespace MusicProjekt.Services
             return _context.Users.Any(u => u.UserName == username);
         }
         
-        public void AddUser(UserDto user)
+        public void AddUser(UserDto user)//moved around exception handling from handler, to enable
+                                            //exception testing
         {
+            if (string.IsNullOrEmpty(user.UserName))
+            {
+                throw new Exception("User must have a username");
+            }
+            if (UserExists(user.UserName))
+            {
+                throw new Exception("Username already exists");
+            }
+
             _context.Users.Add(new User()
             {
                 UserName = user.UserName
@@ -97,10 +107,7 @@ namespace MusicProjekt.Services
             {
                 throw new Exception("Artist not found");
             }
-            if (user.Artists == null)
-            {
-                user.Artists = new List<Artist>();
-            }
+            //tog bort if (user.Artists == null)
 
             user.Artists.Add(artist);
             _context.SaveChanges();
@@ -156,12 +163,15 @@ namespace MusicProjekt.Services
         public List<SongUserViewModel> ListUserSongs(int userId)
         {
             User? user = _context.Users
+                .Include(u => u.Songs)
                 .SingleOrDefault(u => u.UserId == userId);
 
-            List<SongUserViewModel> userSongs = _context.Users
-                .Where(u => u.UserId == userId)
-                .Include(u => u.Songs)
-                .SelectMany(u => u.Songs)
+            if (user == null)
+            {
+                throw new Exception("User not found");
+            }
+
+            List<SongUserViewModel> userSongs = user.Songs
                 .Join(
                     _context.Artists,
                     song => song.ArtistId,
@@ -172,11 +182,6 @@ namespace MusicProjekt.Services
                         ArtistName = artist.ArtistName
                     })
                 .ToList();
-
-            if (user == null)
-            {
-                throw new Exception("User not found");
-            }
 
             return userSongs;
         }
