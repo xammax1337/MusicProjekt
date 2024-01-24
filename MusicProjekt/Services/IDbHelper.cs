@@ -14,6 +14,7 @@ namespace MusicProjekt.Services
     {
         void AddUser(UserDto user);
         List<ListUserViewModel> ListAllUsers();
+        ListUserViewModel GetUserById(int userId);//Nya
 
         List<ArtistViewModel> ListUsersArtists(int userId);
         void ConnectUserToArtist(int userId, int songId);
@@ -68,6 +69,22 @@ namespace MusicProjekt.Services
             return _context.Users
                 .Select(u => new ListUserViewModel { UserId = u.UserId, UserName = u.UserName })
                 .ToList();
+        }
+
+        //Nya
+        public ListUserViewModel GetUserById(int userId)
+        {
+            var user = _context.Users
+                .Where(u => u.UserId == userId)
+                .Select(u => new ListUserViewModel { UserId = u.UserId, UserName = u.UserName })
+                .FirstOrDefault();
+
+            if (user == null)
+            {
+                throw new Exception("User not found");
+            }
+
+            return user;
         }
 
         public List<ArtistViewModel> ListUsersArtists(int userId)

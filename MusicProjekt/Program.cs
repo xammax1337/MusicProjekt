@@ -41,9 +41,24 @@ namespace MusicProjekt.ApiHandler
           
             app.MapGet("/song/{userId}", SongHandler.ListUserSongs);
             app.MapPost("/user/{userId}/song/{songId}", SongHandler.ConnectSongToUser);
-          
-            
+
+
             app.MapPost("/song", SongHandler.AddSong);
+
+            //Nya
+            app.MapGet("/user/{userId:int}", async (int userId, IDbHelper dbHelper) =>
+            {
+                try
+                {
+                    var user = dbHelper.GetUserById(userId);
+                    return Results.Ok(user);
+                }
+                catch (Exception ex)
+                {
+                    return Results.Problem(ex.Message);
+                }
+            });
+
 
             //Test map
             app.MapGet("album/{artist}", async (string artist, IDiscographyService DiscographyService) =>
