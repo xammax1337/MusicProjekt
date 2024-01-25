@@ -7,17 +7,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Models\ViewModel\ViewModel\**" />
+    <Content Remove="Models\ViewModel\ViewModel\**" />
+    <EmbeddedResource Remove="Models\ViewModel\ViewModel\**" />
+    <None Remove="Models\ViewModel\ViewModel\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.26" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.26" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.26">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-  </ItemGroup>
-
-
-  <ItemGroup>
-    <Folder Include="Models\ViewModel\ViewModel\" />
   </ItemGroup>
    
 
