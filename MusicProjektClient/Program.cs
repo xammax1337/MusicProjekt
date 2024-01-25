@@ -1,4 +1,5 @@
 ﻿using MusicProjektClient.ApiModels;
+using System.Net;
 using System.Net.Http.Json;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -22,6 +23,7 @@ namespace MusicProjektClient
                     Console.WriteLine("[2] To select a User");
                     Console.WriteLine("[3] Create new User");
                     Console.WriteLine("[4] Add new Song");
+                    Console.WriteLine("[5] View artists albums");
                     Console.WriteLine("[Q] Quit Program");
 
                     string input = Console.ReadLine();
@@ -44,15 +46,25 @@ namespace MusicProjektClient
 
                             if (int.TryParse(Console.ReadLine(), out int userId))
                             {
-                                Console.WriteLine($"Selected User ID: {userId}");
-                                await UserMenu(client, userId);
-                            }
+                                bool userExists = await CheckIfUserExists(client, userId);
 
+                                if (userExists)
+                                {
+                                    Console.WriteLine($"Selected User ID: {userId}");
+                                    await UserMenu(client, userId);
+                                }
+                                else
+                                {
+                                    Console.WriteLine("User not found. Please enter a valid User ID.");
+                                    Console.ReadLine();
+                                }
+                            }
                             else
                             {
                                 Console.WriteLine("Invalid user ID. Please enter a valid number.");
                                 Console.ReadLine();
                             }
+                            Console.ReadLine();
                             break;
 
                         case "3":
@@ -63,6 +75,10 @@ namespace MusicProjektClient
                         case "4":
                             Console.WriteLine("Adding new song");
                             await AddSong(client);
+                            break;
+
+                        case "5":
+                            await GetAlbumAsync(client);
                             break;
 
                         case "Q":
@@ -78,6 +94,10 @@ namespace MusicProjektClient
 
             static async Task UserMenu(HttpClient client, int userId)
             {
+                Console.Clear();
+                Console.WriteLine($"Current User ID: {userId}");
+                Console.WriteLine($"Now choose an option for this user:");
+                Console.WriteLine($"--------------------------");
                 Console.WriteLine("[1] List User Artists");
                 Console.WriteLine("[2] Connect User To Artist");
                 Console.WriteLine("[3] List Users Genres");
@@ -110,8 +130,27 @@ namespace MusicProjektClient
                         return;
                     default:
                         Console.WriteLine("Wrong input!");
+                        Console.ReadLine();
+                        Console.Clear();
                         break;
                 }
+            }
+
+            static async Task<bool> CheckIfUserExists(HttpClient client, int userId)
+            {
+                var response = await client.GetAsync("/user/");
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    await Console.Out.WriteLineAsync($"Error listing users (status code {response.StatusCode})");
+                    return false;
+                }
+
+                string responseData = await response.Content.ReadAsStringAsync();
+
+                List<User> users = JsonSerializer.Deserialize<List<User>>(responseData);
+
+                return users.Any(user => user.UserId == userId);
             }
 
             static async Task AddSong(HttpClient client)
@@ -142,6 +181,10 @@ namespace MusicProjektClient
                 {
                     await Console.Out.WriteLineAsync($"Error Adding Song (status code {response.StatusCode})");
                     return;
+                }
+                else
+                {
+                    await Console.Out.WriteLineAsync($"Added Song (status code {response.StatusCode})");
                 }
                 Console.ReadLine();
                 Console.Clear();
@@ -188,7 +231,10 @@ namespace MusicProjektClient
                 if (!response.IsSuccessStatusCode)
                 {
                     await Console.Out.WriteLineAsync($"Error Creating new user (status code {response.StatusCode})");
-                    return;
+                }
+                else
+                {
+                    await Console.Out.WriteLineAsync($"Succesfully Created a User with username: {userName} (status code {response.StatusCode})");
                 }
                 Console.ReadLine();
                 Console.Clear();
@@ -215,6 +261,7 @@ namespace MusicProjektClient
 
                 Console.ReadLine();
                 Console.Clear();
+                await UserMenu(client, userId);
             }
 
             static async Task ConnectUserToArtist(HttpClient client, int userId)
@@ -228,8 +275,14 @@ namespace MusicProjektClient
                 if (!response.IsSuccessStatusCode)
                 {
                     await Console.Out.WriteLineAsync($"Error connecting User with Artist (status code {response.StatusCode})");
-                    return;
                 }
+                else
+                {
+                    await Console.Out.WriteLineAsync($"Succesfully connected User with Artist (status code {response.StatusCode})");
+                }
+                Console.ReadLine();
+                Console.Clear();
+                await UserMenu(client, userId);
             }
 
             static async Task ListUsersGenres(HttpClient client, int userId)
@@ -253,7 +306,7 @@ namespace MusicProjektClient
 
                 Console.ReadLine();
                 Console.Clear();
-
+                await UserMenu(client, userId);
             }
 
             static async Task ConnectUserToGenre(HttpClient client, int userId)
@@ -267,9 +320,14 @@ namespace MusicProjektClient
                 if (!response.IsSuccessStatusCode)
                 {
                     await Console.Out.WriteLineAsync($"Error connecting User with Genre (status code {response.StatusCode})");
-                    return;
                 }
-
+                else
+                {
+                    await Console.Out.WriteLineAsync($"Succesfully connected User with Genre (status code {response.StatusCode})");
+                }
+                Console.ReadLine();
+                Console.Clear();
+                await UserMenu(client, userId);
             }
 
             static async Task ListUserSongs(HttpClient client, int userId)
@@ -293,6 +351,7 @@ namespace MusicProjektClient
 
                 Console.ReadLine();
                 Console.Clear();
+                await UserMenu(client, userId);
             }
 
             static async Task ConnectSongToUser(HttpClient client, int userId)
@@ -306,9 +365,47 @@ namespace MusicProjektClient
                 if (!response.IsSuccessStatusCode)
                 {
                     await Console.Out.WriteLineAsync($"Error connecting User with Song (status code {response.StatusCode})");
-                    return;
                 }
+                else
+                {
+                    await Console.Out.WriteLineAsync($"Succesfully connected User with Song (status code {response.StatusCode})");
+                }
+                Console.ReadLine();
+                Console.Clear();
+                await UserMenu(client, userId);
 
+            }
+
+            static async Task GetAlbumAsync(HttpClient client)
+            {
+                await Console.Out.WriteAsync("Enter Artist Name: ");
+
+                string input = Console.ReadLine();
+
+                var response = await client.GetAsync($"/album/{input}");
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    await Console.Out.WriteLineAsync($"Error listing albums for artist (status code {response.StatusCode})");
+
+                }
+                else
+                {
+                    await Console.Out.WriteLineAsync($"Successfully listing albums for artist (status code {response.StatusCode})");
+                    string responseData = await response.Content.ReadAsStringAsync();
+                    GetAlbum getAlbumResponse = JsonSerializer.Deserialize<GetAlbum>(responseData);
+
+                    Console.Clear();
+                    Console.WriteLine($"Showing albums for {input}:");
+                    Console.WriteLine($"--------------------------");
+
+                    foreach (var album in getAlbumResponse.ViewAlbums)
+                    {
+                        Console.WriteLine($"{album.StrAlbum}, {album.IntYearReleased}");
+                    }
+
+                    Console.ReadLine();
+                }
             }
 
         }

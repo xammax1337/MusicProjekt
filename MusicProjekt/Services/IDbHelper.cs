@@ -43,7 +43,7 @@ namespace MusicProjekt.Services
         {
             return _context.Users.Any(u => u.UserName == username);
         }
-        
+
         public void AddUser(UserDto user)//moved around exception handling from handler, to enable
                                             //exception testing
         {
@@ -107,10 +107,22 @@ namespace MusicProjekt.Services
             {
                 throw new Exception("Artist not found");
             }
-            //tog bort if (user.Artists == null)
+            ////tog bort if (user.Artists == null)
 
-            user.Artists.Add(artist);
-            _context.SaveChanges();
+            //user.Artists.Add(artist);
+            //_context.SaveChanges();
+
+            // Check if the connection already exists
+            if (!user.Artists.Any(a => a.ArtistId == artistId))
+            {
+                // If the connection does not exist, add it
+                user.Artists.Add(artist);
+                _context.SaveChanges();
+            }
+            else
+            {
+                throw new Exception("Connection already exists!");
+            }
         }
 
         public List<ListGenreViewModel> GetAllGenresForUser(int userId)
