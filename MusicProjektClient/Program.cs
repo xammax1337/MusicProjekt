@@ -13,7 +13,7 @@ namespace MusicProjektClient
     {
         static async Task Main(string[] args)
         {
-            string ourText = "Greetings! What shall we do today?\n";
+            string ourText = "Greetings! What shall we do today?\n\nLoading...\n";
             PrintOneByOne(ourText);
             Thread.Sleep(1000);
 
