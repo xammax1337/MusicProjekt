@@ -1,0 +1,71 @@
+﻿using MusicProjektClient.ApiModels;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Text.Json;
+using System.Threading.Tasks;
+
+namespace MusicProjektClient.Helpers
+{
+    public class UserMethods
+    {
+        public static async Task ListAllUsers(HttpClient client)
+        {
+            var response = await client.GetAsync($"/user/");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                await Console.Out.WriteLineAsync($"Error listing user's (status code: {response.StatusCode}). " +
+                    $"\nPress enter to return to menu");
+                return;
+            }
+
+            SoundMethods.PlayListingSound();
+            string responseData = await response.Content.ReadAsStringAsync();
+
+            List<User> users = JsonSerializer.Deserialize<List<User>>(responseData);
+
+            foreach (var user in users)
+            {
+                Console.WriteLine($"User ID: {user.UserId}, username: {user.UserName}");
+            }
+
+            Console.ReadLine();
+        }
+
+        public static async Task AddUser(HttpClient client)
+        {
+            await Console.Out.WriteAsync("Enter username: ");
+            string userName = Console.ReadLine();
+
+            AddUser adduser = new AddUser()
+            {
+                UserName = userName
+            };
+
+            string json = JsonSerializer.Serialize(adduser);
+
+            StringContent jsonContent = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await client.PostAsync("/newUser", jsonContent);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                Console.Clear();
+                await Console.Out.WriteLineAsync($"Error creating new user (status code: {response.StatusCode}). " +
+                    $"\nPress enter to return to menu.");
+            }
+            else
+            {
+                Console.Clear();
+                SoundMethods.PlaySuccessfullAdd();
+                await Console.Out.WriteLineAsync($"Succesfully created a user with username: {userName} (status code: {response.StatusCode}). " +
+                    $"\nPress enter to return to menu.");
+            }
+            Console.ReadLine();
+            Console.Clear();
+        }
+
+    }
+}
