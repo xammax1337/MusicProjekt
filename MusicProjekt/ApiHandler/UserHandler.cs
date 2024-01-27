@@ -20,6 +20,7 @@ namespace MusicProjekt.ApiHandler
             }
 
         }
+        //Get all users in database
         public static IResult ListAllUsers(IDbHelper dbHelper)
         {
             var users = dbHelper.ListAllUsers();

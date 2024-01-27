@@ -27,12 +27,14 @@ namespace MusicProjektClient
                 while (true)
                 {
                     Console.Clear();
+                    Console.ForegroundColor = ConsoleColor.DarkCyan;
                     Console.WriteLine("[1] View all users");
                     Console.WriteLine("[2] Select a user");
                     Console.WriteLine("[3] Create new user");
                     Console.WriteLine("[4] Add new song");
                     Console.WriteLine("[5] View artist's albums");
                     Console.WriteLine("[Q] Quit program");
+                    Console.ResetColor();
 
                     string input = Console.ReadLine();
 
@@ -45,15 +47,19 @@ namespace MusicProjektClient
                     {
                         case "1":
                             Console.Clear();
+                            Console.ForegroundColor = ConsoleColor.DarkCyan;
                             Console.WriteLine("Listing all users. \nPress enter to return to main menu");
                             Console.WriteLine($"--------------------------");
                             await UserMethods.ListAllUsers(client);
+                            Console.ResetColor();
                             break;
 
                         case "2":
                             Console.Clear();
+                            Console.ForegroundColor= ConsoleColor.DarkCyan;
                             Console.WriteLine("Select a user");
                             Console.Write("Enter user ID: ");
+                            Console.ResetColor();
 
                             if (int.TryParse(Console.ReadLine(), out int userId))
                             {
@@ -61,33 +67,43 @@ namespace MusicProjektClient
 
                                 if (userExists)
                                 {
+                                    Console.ForegroundColor=ConsoleColor.DarkCyan;
                                     Console.WriteLine($"Selected user ID: {userId}");
                                     await MenuMethods.UserMenu(client, userId);
+                                    Console.ResetColor();
                                 }
                                 else
                                 {
                                     SoundMethods.PlayWrongInput();
+                                    Console.ForegroundColor= ConsoleColor.Red;
                                     Console.WriteLine("User not found. Please, enter a valid user ID. " +
                                         "\nPress enter to return to main menu.");
+                                    Console.ResetColor();
                                     Console.ReadLine();
                                 }
                             }
                             else
                             {
+                                Console.ForegroundColor = ConsoleColor.Red;
                                 Console.WriteLine("Oops, invalid user ID! Please, enter a valid number.");
+                                Console.ResetColor();
                                 Console.ReadLine();
                             }
                             Console.ReadLine();
                             break;
 
                         case "3":
+                            Console.ForegroundColor=ConsoleColor.DarkCyan;
                             Console.WriteLine("Create new user");
                             await UserMethods.AddUser(client);
+                            Console.ResetColor();
                             break;
 
                         case "4":
                             Console.Clear();
+                            Console.ForegroundColor = ConsoleColor.DarkCyan;
                             Console.WriteLine("Add new song");
+                            Console.ResetColor();
                             await SongMethods.AddSong(client);
                             break;
 
@@ -102,7 +118,9 @@ namespace MusicProjektClient
 
                         default:
                             Console.Clear();
+                            Console.ForegroundColor = ConsoleColor.Red;
                             Console.WriteLine("Nah, invalid input, press enter to return to main menu.");
+                            Console.ResetColor();
                             break;
                     }
                 }
@@ -112,7 +130,9 @@ namespace MusicProjektClient
             static async Task GetAlbumAsync(HttpClient client)
             {
                 Console.Clear();
+                Console.ForegroundColor = ConsoleColor.DarkCyan;
                 await Console.Out.WriteAsync("Enter artist name: ");
+                Console.ResetColor();
 
                 string input = Console.ReadLine();
 
@@ -121,13 +141,16 @@ namespace MusicProjektClient
                 if (!response.IsSuccessStatusCode)
                 {
                     Console.Clear();
+                    Console.ForegroundColor = ConsoleColor.Red;
                     await Console.Out.WriteLineAsync($"Error listing albums for artist (status code: {response.StatusCode}). " +
                         $"\nPress enter to return to menu.");
+                    Console.ResetColor();
 
                 }
                 else
                 {
                     Console.Clear();
+                    Console.ForegroundColor = ConsoleColor.DarkCyan;
                     await Console.Out.WriteLineAsync($"Successfully listing albums for artist (status code: {response.StatusCode}). " +
                         $"\nPress enter to return to menu.");
                     string responseData = await response.Content.ReadAsStringAsync();
@@ -144,6 +167,7 @@ namespace MusicProjektClient
                     Console.WriteLine($"--------------------------");
                     Console.WriteLine("Press enter to return to menu.");
                     Console.ReadLine();
+                    Console.ResetColor();
                 }
             }
 
