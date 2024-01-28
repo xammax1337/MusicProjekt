@@ -21,6 +21,7 @@ namespace MusicProjectTest
         {
             //Arrange
             int userId = 1;
+            //Using mock to fake implementation IDbHelper, testing if it calls the method
             var mockService = new Mock<IDbHelper>();
             IDbHelper dbHelper = mockService.Object;
 
@@ -35,6 +36,7 @@ namespace MusicProjectTest
         public void ListUsersArtists_UsersArtistsInDbIsListedCorrect()
         {
             //Arrange
+            //Using InMemory (fake database) check user's artists
             DbContextOptions<ApplicationContext> options = new DbContextOptionsBuilder<ApplicationContext>()
                 .UseInMemoryDatabase("TestDb")
                 .Options;
@@ -52,13 +54,15 @@ namespace MusicProjectTest
                 {
                     UserId = 8,
                     UserName = "test-user",
-                    Artists = new List<Artist> { testArtist } //Added artist to users list
+                    //Added testArtist to user's list
+                    Artists = new List<Artist> { testArtist } 
                 };
 
                 context.Users.Add(testUser);
                 context.Artists.Add(testArtist);
                 context.SaveChanges();
 
+                //Giving userId and artistId values for use in method
                 int userId = testUser.UserId;
                 int artistId = testArtist.ArtistId;
 
@@ -87,6 +91,7 @@ namespace MusicProjectTest
             //Arrange
             int userId = 1;
             var mockService = new Mock<IDbHelper>();
+            //If any int is called upon, it will check if exception is working
             mockService.Setup(h => h.ListUsersArtists(It.IsAny<int>()))
                 .Throws(new Exception());
             IDbHelper dbHelper = mockService.Object;
@@ -118,7 +123,7 @@ namespace MusicProjectTest
         {
             //Arrange
             DbContextOptions<ApplicationContext> options = new DbContextOptionsBuilder<ApplicationContext>()
-                .UseInMemoryDatabase("TestDb")
+                .UseInMemoryDatabase("TestDb2")
                 .Options;
             using (ApplicationContext context = new ApplicationContext(options))
             {
@@ -153,6 +158,7 @@ namespace MusicProjectTest
                     .SingleOrDefault(u => u.UserId == userId);
 
                 Assert.IsNotNull(userInTestDb);
+                //If one artist is available in user's database, test is successful
                 Assert.AreEqual(1, userInTestDb.Artists.Count);
             }
 

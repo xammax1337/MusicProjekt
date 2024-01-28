@@ -8,6 +8,7 @@
         public int ArtistId {  get; set; } 
         public int GenreId {  get; set; }
 
+        //Song can be connected with many users.
         public ICollection<User> Users { get; set; }
     }
 }

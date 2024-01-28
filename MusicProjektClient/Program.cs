@@ -18,7 +18,7 @@ namespace MusicProjektClient
             MenuMethods.PrintOneByOne(ourText);
             Thread.Sleep(1000);
 
-            SoundMethods.PlayIntroToConsoleClient();
+            SoundMethods.PlayIntroToConsoleClientSound();
 
             using (HttpClient client = new HttpClient())
             {
@@ -61,12 +61,13 @@ namespace MusicProjektClient
 
                                 if (userExists)
                                 {
+                                    SoundMethods.PlayListingSound();
                                     Console.WriteLine($"Selected user ID: {userId}");
                                     await MenuMethods.UserMenu(client, userId);
                                 }
                                 else
                                 {
-                                    SoundMethods.PlayWrongInput();
+                                    SoundMethods.PlayWrongInputSound();
                                     Console.WriteLine("User not found. Please, enter a valid user ID. " +
                                         "\nPress enter to return to main menu.");
                                     Console.ReadLine();
@@ -74,6 +75,7 @@ namespace MusicProjektClient
                             }
                             else
                             {
+                                SoundMethods.PlayWrongInputSound();
                                 Console.WriteLine("Oops, invalid user ID! Please, enter a valid number.");
                                 Console.ReadLine();
                             }
@@ -102,6 +104,7 @@ namespace MusicProjektClient
 
                         default:
                             Console.Clear();
+                            SoundMethods.PlayWrongInputSound();
                             Console.WriteLine("Nah, invalid input, press enter to return to main menu.");
                             break;
                     }
@@ -121,6 +124,7 @@ namespace MusicProjektClient
                 if (!response.IsSuccessStatusCode)
                 {
                     Console.Clear();
+                    SoundMethods.PlayListingNotPossibleSound();
                     await Console.Out.WriteLineAsync($"Error listing albums for artist (status code: {response.StatusCode}). " +
                         $"\nPress enter to return to menu.");
 
@@ -128,6 +132,7 @@ namespace MusicProjektClient
                 else
                 {
                     Console.Clear();
+                    SoundMethods.PlayListingSound();
                     await Console.Out.WriteLineAsync($"Successfully listing albums for artist (status code: {response.StatusCode}). " +
                         $"\nPress enter to return to menu.");
                     string responseData = await response.Content.ReadAsStringAsync();
