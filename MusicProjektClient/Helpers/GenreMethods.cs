@@ -17,11 +17,13 @@ namespace MusicProjektClient.Helpers
             if (!response.IsSuccessStatusCode)
             {
                 Console.Clear();
+                SoundMethods.PlayListingNotPossibleSound();
                 await Console.Out.WriteLineAsync($"Error listing user's genres (status code: {response.StatusCode}). " +
                     $"\nPress enter to return to menu.");
                 return;
             }
 
+            SoundMethods.PlayListingSound();
             string responseData = await response.Content.ReadAsStringAsync();
 
             List<ListUsersGenres> genres = JsonSerializer.Deserialize<List<ListUsersGenres>>(responseData);
@@ -47,6 +49,7 @@ namespace MusicProjektClient.Helpers
             if (!response.IsSuccessStatusCode)
             {
                 Console.Clear();
+                SoundMethods.PlayUnsuccessfulConnectSound();
                 await Console.Out.WriteLineAsync($"Error connecting user with genre (status code: {response.StatusCode}). " +
                     $"\nPress enter to return to menu." +
                     $"");
@@ -54,6 +57,7 @@ namespace MusicProjektClient.Helpers
             else
             {
                 Console.Clear();
+                SoundMethods.PlaySuccessfulConnectSound();
                 await Console.Out.WriteLineAsync($"Succesfully connected user with genre (status code: {response.StatusCode}). " +
                     $"\nPress enter to return to menu.");
             }

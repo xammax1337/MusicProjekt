@@ -6,6 +6,7 @@ namespace MusicProjekt.ApiHandler
 {
     public class ArtistHandler
     {
+        //Handler for artist methods. IResult are here (in Handler folder) to  enable unit testing.
         public static IResult ListUsersArtists(IDbHelper dbHelper, int userId)
         {
             try
