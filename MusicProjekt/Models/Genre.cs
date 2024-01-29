@@ -1,5 +1,6 @@
 ﻿namespace MusicProjekt.Models
 {
+    // Represents the Genre entity in the database
     public class Genre
     {
         public int GenreId { get; set; }

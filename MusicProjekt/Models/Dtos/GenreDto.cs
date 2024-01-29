@@ -1,6 +1,7 @@
 ﻿
 namespace MusicProjekt.Models.Dtos
 {
+    // Represents a Data Transfer Object for Genre information
     public class GenreDto
     { 
         public int UserId { get; set; }

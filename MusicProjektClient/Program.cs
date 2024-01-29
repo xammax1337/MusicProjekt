@@ -16,16 +16,18 @@ namespace MusicProjektClient
         {
             string ourText = "Greetings! What shall we do today?\n\nLoading...\n";
             MenuMethods.PrintOneByOne(ourText);
-            Thread.Sleep(1000);
+            Thread.Sleep(100);
 
             SoundMethods.PlayIntroToConsoleClientSound();
 
+            // Initialization and setup
             using (HttpClient client = new HttpClient())
             {
                 client.BaseAddress = new Uri("https://localhost:7048");
 
                 while (true)
                 {
+                    // Display the main menu options
                     Console.Clear();
                     Console.WriteLine("[1] View all users");
                     Console.WriteLine("[2] Select a user");
