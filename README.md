@@ -1,3 +1,11 @@
+ABOUT THIS PROJECT
+
+
+
+
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 Documentation of calls to API
 
 
@@ -52,3 +60,9 @@ This POST call will connect the user, by user ID, to a song, by song ID. If a no
 9. http://localhost:XXXX/song
 
 This POST call will create a new song, if the user types in the fields for title, artist ID and genre ID in the JSON text field. If the title field is empty, or if the chosen artist ID or genre ID is non-existing, exception messages will occur.
+
+
+
+10. http://localhost:XXXX/album/{artist}
+
+This GET call will list the chosen artist's albums.
