@@ -124,8 +124,7 @@ namespace MusicProjektClient.Helpers
 
                 Console.ForegroundColor = ConsoleColor.DarkRed;
 
-                await Console.Out.WriteLineAsync($"Error finding user (status code: {response.StatusCode}). " +
-                    $"\nPress enter to return to menu.");
+                await Console.Out.WriteLineAsync($"Error finding user (status code: {response.StatusCode})");
                 return false;
             }
 

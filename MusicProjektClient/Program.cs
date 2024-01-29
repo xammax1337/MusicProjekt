@@ -14,13 +14,13 @@ namespace MusicProjektClient
     {
         static async Task Main(string[] args)
         {
-            Console.ForegroundColor = ConsoleColor.DarkBlue;
+            Console.ForegroundColor = ConsoleColor.Cyan;
             string ourText = "Greetings! What shall we do today?\n\nLoading...\n";
             MenuMethods.PrintOneByOne(ourText);
             Console.ResetColor();
             Thread.Sleep(100);
 
-            SoundMethods.PlayIntroToConsoleClientSound();
+            //SoundMethods.PlayIntroToConsoleClientSound();
 
             // Initialization and setup
             using (HttpClient client = new HttpClient())
@@ -91,7 +91,8 @@ namespace MusicProjektClient
                             {
                                 Console.ForegroundColor = ConsoleColor.Red;
                                 SoundMethods.PlayWrongInputSound();
-                                Console.WriteLine("Oops, invalid user ID! Please, enter a valid number.");
+                                Console.WriteLine("Oops, invalid user ID! Please, enter a valid number." +
+                                    "\n Press enter to return to main menu.");
                                 Console.ReadLine();
                                 Console.ResetColor();
                             }
@@ -107,7 +108,7 @@ namespace MusicProjektClient
 
                         case "4":
                             Console.Clear();
-                            Console.ForegroundColor= ConsoleColor.DarkCyan;
+                            Console.ForegroundColor = ConsoleColor.DarkCyan;
                             Console.WriteLine("Add new song");
                             await SongMethods.AddSong(client);
                             Console.ResetColor();

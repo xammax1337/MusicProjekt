@@ -37,7 +37,7 @@ namespace MusicProjektClient.Helpers
             if (!response.IsSuccessStatusCode)
             {
                 Console.Clear();
-                SoundMethods.PlayUnsuccessfulAddSound();
+                //SoundMethods.PlayUnsuccessfulAddSound();
                 await Console.Out.WriteLineAsync($"Error adding song (status code: {response.StatusCode}). " +
                     $"\nPress enter to return to menu");
                 return;
