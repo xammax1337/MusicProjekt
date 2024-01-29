@@ -12,18 +12,24 @@ namespace MusicProjektClient.Helpers
     {
         public static async Task ListUsersArtists(HttpClient client, int userId)
         {
+            //Makes a GET call to API's endpoint, which is through user's ID
             var response = await client.GetAsync($"/artist/{userId}");
 
             if (!response.IsSuccessStatusCode)
             {
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+                SoundMethods.PlayListingNotPossibleSound();
+
                 await Console.Out.WriteLineAsync($"Error listing user's artists (status code: {response.StatusCode}). " +
                     $"\nPress enter to return to menu.");
                 return;
             }
 
             SoundMethods.PlayListingSound();
+            //The string answer we get from the call
             string responseData = await response.Content.ReadAsStringAsync();
 
+            //Deserializing the Json string  into a list of of ListUsersArtists objects
             List<ListUsersArtists> artists = JsonSerializer.Deserialize<List<ListUsersArtists>>(responseData);
 
             foreach (var artist in artists)
@@ -35,25 +41,41 @@ namespace MusicProjektClient.Helpers
             Console.Clear();
             await MenuMethods.UserMenu(client, userId);
         }
-
         public static async Task ConnectUserToArtist(HttpClient client, int userId)
         {
-            await Console.Out.WriteAsync("Enter artist ID to connect with: ");
-
-            int artistId = Convert.ToInt32(Console.ReadLine());
+            //This chosen artist ID is to be connected with chosen user ID in main menu
+            int artistId;
+            while (true)
+            {
+                Console.ForegroundColor= ConsoleColor.White;
+                await Console.Out.WriteAsync("Enter artist ID to connect with: ");
+                if(int.TryParse(Console.ReadLine(), out artistId))
+                {
+                   break;
+                }
+                else 
+                {
+                    Console.ForegroundColor= ConsoleColor.DarkRed;
+                    Console.WriteLine("Invalid artist ID. Please enter a valid number.");
+                }
+            }          
 
             var response = await client.PostAsync($"/user/{userId}/artist/{artistId}", null);
 
             if (!response.IsSuccessStatusCode)
             {
                 Console.Clear();
-                SoundMethods.PlayUnsuccessfullConnect();
+
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+                SoundMethods.PlayUnsuccessfulConnectSound();
+              
                 await Console.Out.WriteLineAsync($"Error connecting user with artist (status code: {response.StatusCode}). " +
                     $"\nPress enter to return to menu.");
             }
             else
             {
                 Console.Clear();
+                SoundMethods.PlaySuccessfulConnectSound();
                 await Console.Out.WriteLineAsync($"Succesfully connected user with artist (status code: {response.StatusCode}). " +
                     $"\nPress enter to return to menu.");
             }

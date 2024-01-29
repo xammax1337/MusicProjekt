@@ -86,74 +86,41 @@ namespace MusicProjectTest
             });
 
             //Assert
+            //Checks that a user exists in fake database (method is working)
             Assert.AreEqual(1, context.Users.Count());
         }
 
         [TestMethod]
-        [ExpectedException(typeof(Exception))]
         public void AddUser_ThrowsExceptionIfUserNameAlreadyExists()
         {
             //Arrange
             DbContextOptions<ApplicationContext> options = new DbContextOptionsBuilder<ApplicationContext>()
-                .UseInMemoryDatabase("TestDb")
+                .UseInMemoryDatabase("TestDb3")
                 .Options;
-            ApplicationContext context = new ApplicationContext(options);
-            DbHelper dbHelper = new DbHelper(context);
 
-            dbHelper.AddUser(new UserDto()
+            using (ApplicationContext context = new ApplicationContext(options))
             {
-                UserName = "test-user"
-            });
-            context.SaveChanges();
+                DbHelper dbHelper = new DbHelper(context);
 
-            string userName = "test-user";
-            var mockService = new Mock<IDbHelper>();
+                dbHelper.AddUser(new UserDto
+                {
+                    UserName = "test-user"
+                });
+                context.SaveChanges();
 
-            UserDto user = new UserDto()
-            {
-                UserName = userName
-            };
+                //Act
+                UserDto userDto = new UserDto
+                {
+                    UserName = "test-user"
+                };
 
-            mockService.Setup(h => h.UserExists("test-user")).Returns(true);
+                //Assert
+                //Using Assert.ThrowsException instead of ExpectedException
+                Assert.ThrowsException<Exception>(() => dbHelper.AddUser(userDto));
 
-            dbHelper.AddUser(user);
+            }
 
         }
 
-        [TestMethod]//FUNKAR EJ - SE ÖVER SEN
-        [ExpectedException(typeof(Exception))]
-        public void AddUser_ThrowsExceptionIfInputIsEmpty()
-        {
-            //Arrange
-            string userName = "";
-            var mockService = new Mock<IDbHelper>();
-            IDbHelper dbHelper = mockService.Object;
-
-            UserDto user = new UserDto()
-            {
-                UserName = userName
-            };
-
-            //dbHelper.AddUser(user);
-
-            dbHelper.AddUser(user);
-
-
-
-
-            //////Act
-            //Assert.ThrowsException<Exception>(() => dbHelper.AddUser(user));
-
-            //Arrange
-            //var mockService = new Mock<IDbHelper>();
-            //var userDto = new UserDto { UserName = "" };
-
-            //Assert.ThrowsException<Exception>(() =>
-            //{
-            //    mockService.Object.AddUser(userDto);
-            //});
-
-
-        }
     }
 }

@@ -9,7 +9,7 @@ using Microsoft.IdentityModel.Protocols;
 
 namespace MusicProjekt.Services
 {
-
+    // IDbHelper interface defines methods for interacting with the database
     public interface IDbHelper
     {
         void AddUser(UserDto user);
@@ -19,6 +19,7 @@ namespace MusicProjekt.Services
         void ConnectUserToArtist(int userId, int songId);
 
         List<ListGenreViewModel> GetAllGenresForUser(int userId);
+
         void AddGenreForUser(int genreId, int userId);
 
         List<SongUserViewModel> ListUserSongs(int userId);
@@ -26,11 +27,10 @@ namespace MusicProjekt.Services
 
         void AddSong(AddSongDto song);
 
-        //Exceptions new
         bool UserExists(string username);
     }
 
-
+    //Making depency injection to make life easier (for unit testing)
     public class DbHelper : IDbHelper
     {
         private readonly ApplicationContext _context;
@@ -39,14 +39,15 @@ namespace MusicProjekt.Services
             _context = context;
         }
 
+        //Used in AddUser method for exception handling
         public bool UserExists(string username)
         {
             return _context.Users.Any(u => u.UserName == username);
         }
 
-        public void AddUser(UserDto user)//moved around exception handling from handler, to enable
-                                            //exception testing
+        public void AddUser(UserDto user)
         {
+            //If no username is chosen or username already exists, exception will be thrown.
             if (string.IsNullOrEmpty(user.UserName))
             {
                 throw new Exception("User must have a username");
@@ -56,6 +57,7 @@ namespace MusicProjekt.Services
                 throw new Exception("Username already exists");
             }
 
+            //Otherwise new user is added into database.
             _context.Users.Add(new User()
             {
                 UserName = user.UserName
@@ -69,18 +71,20 @@ namespace MusicProjekt.Services
                 .Select(u => new ListUserViewModel { UserId = u.UserId, UserName = u.UserName })
                 .ToList();
         }
-
+        
         public List<ArtistViewModel> ListUsersArtists(int userId)
         {
             User? user = _context.Users
                 .Include(u => u.Artists)
                 .SingleOrDefault(u => u.UserId == userId);
 
+            //Exception thrown if user is not found.
             if (user == null)
             {
                 throw new Exception("User not found");
             }
 
+            // If found, artists are listed.
             List<ArtistViewModel> result = user.Artists
                .Select(a => new ArtistViewModel()
                {
@@ -92,12 +96,11 @@ namespace MusicProjekt.Services
 
         public void ConnectUserToArtist(int userId, int artistId)
         {
-
             User? user = _context.Users
             .Include(u => u.Artists)
             .SingleOrDefault(u => u.UserId == userId);
             Artist? artist = _context.Artists
-                .SingleOrDefault(a => a.ArtistId == artistId);
+            .SingleOrDefault(a => a.ArtistId == artistId);
 
             if (user == null)
             {
@@ -107,15 +110,11 @@ namespace MusicProjekt.Services
             {
                 throw new Exception("Artist not found");
             }
-            ////tog bort if (user.Artists == null)
 
-            //user.Artists.Add(artist);
-            //_context.SaveChanges();
-
-            // Check if the connection already exists
+            // Checking if the connection already exists
             if (!user.Artists.Any(a => a.ArtistId == artistId))
             {
-                // If the connection does not exist, add it
+                // If not existing, it will be added
                 user.Artists.Add(artist);
                 _context.SaveChanges();
             }
@@ -125,6 +124,7 @@ namespace MusicProjekt.Services
             }
         }
 
+        // Get all genres associated with a specific user
         public List<ListGenreViewModel> GetAllGenresForUser(int userId)
         {
 
@@ -147,6 +147,7 @@ namespace MusicProjekt.Services
 
         }
 
+        // Add a genre for a specific user
         public void AddGenreForUser(int genreId, int userId)
         {
             User? user = _context.Users
