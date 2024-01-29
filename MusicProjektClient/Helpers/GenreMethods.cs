@@ -46,10 +46,29 @@ namespace MusicProjektClient.Helpers
         // Asynchronously connects a user to a genre
         public static async Task ConnectUserToGenre(HttpClient client, int userId)
         {
+            Console.ForegroundColor = ConsoleColor.DarkGreen;
             await Console.Out.WriteAsync("Enter genre ID to connect with: ");
+            Console.ForegroundColor = ConsoleColor.White;
+            int genreId;
+            while (true)
+            {
+             
+                Console.ForegroundColor = ConsoleColor.White;
+                if (int.TryParse(Console.ReadLine(), out genreId))
+                {
 
-            int genreId = Convert.ToInt32(Console.ReadLine());
+                    break;
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkRed;
+                    Console.WriteLine("Invalid genre ID. Please enter a valid number.");
+                    Console.WriteLine("Press enter to return to menu");
+                    return;
+                   
+                }
 
+            }
             // Send HTTP POST request to connect user to the specified genre
             var response = await client.PostAsync($"/user/{userId}/genre/{genreId}", null);
 
@@ -69,6 +88,7 @@ namespace MusicProjektClient.Helpers
             {
                 Console.Clear();
                 SoundMethods.PlaySuccessfulConnectSound();
+                Console.ForegroundColor = ConsoleColor.Green;
                 await Console.Out.WriteLineAsync($"Succesfully connected user with genre (status code: {response.StatusCode}). " +
                     $"\nPress enter to return to menu.");
             }
