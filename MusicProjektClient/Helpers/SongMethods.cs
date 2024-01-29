@@ -12,14 +12,45 @@ namespace MusicProjektClient.Helpers
     {
         public static async Task AddSong(HttpClient client)
         {
+
             await Console.Out.WriteAsync("Enter song title: ");
+            Console.ForegroundColor = ConsoleColor.White;
             string title = Console.ReadLine();
+            Console.ResetColor();
 
-            await Console.Out.WriteAsync("Enter artist ID: ");
-            int artistId = Convert.ToInt32(Console.ReadLine());
-
-            await Console.Out.WriteAsync("Enter genre ID: ");
-            int genreId = Convert.ToInt32(Console.ReadLine());
+            int artistId;
+            while (true)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkCyan;
+                await Console.Out.WriteAsync("Enter artist ID: ");
+                Console.ForegroundColor = ConsoleColor.White;
+                if (int.TryParse(Console.ReadLine(), out artistId)) 
+                {
+                   
+                    break;
+                }
+                else 
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkRed;
+                    Console.WriteLine("Invalid artist ID. Please enter a valid number.");
+                }
+            }
+            int genreId;
+            while (true)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkCyan;              
+                await Console.Out.WriteAsync("Enter genre ID: ");
+                Console.ForegroundColor = ConsoleColor.White;
+                if (int.TryParse(Console.ReadLine(), out genreId))
+                {
+                    break;
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkRed;
+                    Console.WriteLine("Invalid genre ID. Please enter a valid number.");
+                }
+            }         
 
             AddSong addSong = new AddSong()
             {
@@ -38,6 +69,7 @@ namespace MusicProjektClient.Helpers
             {
                 Console.Clear();
                 SoundMethods.PlayUnsuccessfulAddSound();
+                Console.ForegroundColor = ConsoleColor.DarkRed;
                 await Console.Out.WriteLineAsync($"Error adding song (status code: {response.StatusCode}). " +
                     $"\nPress enter to return to menu");
                 return;
@@ -46,6 +78,7 @@ namespace MusicProjektClient.Helpers
             {
                 Console.Clear();
                 SoundMethods.PlaySuccessfulAddSound();
+                Console.ForegroundColor = ConsoleColor.Green;
                 await Console.Out.WriteLineAsync($"Added song (status code: {response.StatusCode}). " +
                     $"\nPress enter to return to menu.");
             }
@@ -82,9 +115,30 @@ namespace MusicProjektClient.Helpers
         }
         public static async Task ConnectSongToUser(HttpClient client, int userId)
         {
+            Console.ForegroundColor = ConsoleColor.DarkGreen;
             await Console.Out.WriteAsync("Enter song ID to connect with: ");
+            Console.ForegroundColor = ConsoleColor.White;
+            
+            int songId;
+            while (true)
+            {
+               
+                Console.ForegroundColor = ConsoleColor.White;
+                if (int.TryParse(Console.ReadLine(), out songId))
+                {
+                    break;
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkRed;
+                    Console.WriteLine("Invalid song ID. Please enter a valid number."); 
+                    Console.WriteLine("Press enter to return to menu");
 
-            int songId = Convert.ToInt32(Console.ReadLine());
+                    return;
+
+                }
+                
+            }
 
             var response = await client.PostAsync($"/user/{userId}/song/{songId}", null);
 
@@ -100,6 +154,7 @@ namespace MusicProjektClient.Helpers
             {
                 Console.Clear();
                 SoundMethods.PlaySuccessfulConnectSound();
+                Console.ForegroundColor = ConsoleColor.Green;
                 await Console.Out.WriteLineAsync($"Succesfully connected user with song (status code: {response.StatusCode}). " +
                     $"\nPress enter to return to menu.");
             }

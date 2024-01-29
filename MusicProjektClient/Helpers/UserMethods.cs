@@ -31,13 +31,14 @@ namespace MusicProjektClient.Helpers
             {
                 Console.WriteLine($"User ID: {user.UserId}, username: {user.UserName}");
             }
-
+           
             Console.ReadLine();
         }
 
         public static async Task AddUser(HttpClient client)
         {
             await Console.Out.WriteAsync("Enter username: ");
+            Console.ForegroundColor = ConsoleColor.White;
             string userName = Console.ReadLine();
 
             AddUser adduser = new AddUser()
@@ -62,8 +63,10 @@ namespace MusicProjektClient.Helpers
             {
                 Console.Clear();
                 SoundMethods.PlaySuccessfulAddSound();
+                Console.ForegroundColor = ConsoleColor.Green;
                 await Console.Out.WriteLineAsync($"Succesfully created a user with username: {userName} (status code: {response.StatusCode}). " +
                     $"\nPress enter to return to menu.");
+                Console.ResetColor();
             }
             Console.ReadLine();
             Console.Clear();
