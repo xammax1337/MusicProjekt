@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace MusicProjektClient.ApiModels
 {
+    // Represents the data model for listing genres associated with a user
     internal class ListUsersGenres
     {
         [JsonPropertyName("genreName")]

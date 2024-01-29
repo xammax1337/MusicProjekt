@@ -14,18 +14,20 @@ namespace MusicProjektClient
     {
         static async Task Main(string[] args)
         {
-            string ourText = "Greetings! What shall we do today?\n\nLoading...\n";
-            MenuMethods.PrintOneByOne(ourText);
-            Thread.Sleep(1000);
+            //string ourText = "Greetings! What shall we do today?\n\nLoading...\n";
+            //MenuMethods.PrintOneByOne(ourText);
+            //Thread.Sleep(1000);
 
-            SoundMethods.PlayIntroToConsoleClient();
+            //SoundMethods.PlayIntroToConsoleClient();
 
+            // Initialization and setup
             using (HttpClient client = new HttpClient())
             {
                 client.BaseAddress = new Uri("https://localhost:7048");
 
                 while (true)
                 {
+                    // Display the main menu options
                     Console.Clear();
                     Console.WriteLine("[1] View all users");
                     Console.WriteLine("[2] Select a user");

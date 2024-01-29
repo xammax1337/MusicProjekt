@@ -21,6 +21,7 @@ namespace MusicProjectTest
     [TestClass]
     public class GenreHandlerTests
     {
+        // Test method to ensure that adding a genre to a user works as expected
         [TestMethod]
         public void AddGenreForUser_Should_Add_Genre_To_User()
         {
@@ -52,6 +53,7 @@ namespace MusicProjectTest
 
         }
 
+        // Test method to ensure that attempting to add a genre for a non-existing user throws an exception
         [TestMethod]
         public void AddGenreForNonExistingUser_Should_Throw_Exception()
         {
@@ -69,6 +71,7 @@ namespace MusicProjectTest
             }
         }
 
+        // Test method to ensure that retrieving all genres for a user works as expected
         [TestMethod]
         public void GetAllGenresForUser_Should_Return_Genres()
         {
@@ -96,14 +99,14 @@ namespace MusicProjectTest
             Assert.AreEqual("Rock", userGenres[0].GenreName);
         }
 
+        // Test method to ensure that listing genres for a user through the GenreHandler works as expected
         [TestMethod]
-
         public void ListUsersGenres_Should_Return_Genres()
         {
             // Arrange
             var userId = 1;
             var expectedGenres = new List<ListGenreViewModel>
-             {
+            {
              new ListGenreViewModel { GenreName = "Rock" }
             };
 

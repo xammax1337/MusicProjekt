@@ -52,7 +52,6 @@ namespace MusicProjektClient.Helpers
             Console.ReadLine();
             Console.Clear();
         }
-
         public static async Task ListUserSongs(HttpClient client, int userId)
         {
             var response = await client.GetAsync($"/song/{userId}");
@@ -60,6 +59,7 @@ namespace MusicProjektClient.Helpers
             if (!response.IsSuccessStatusCode)
             {
                 Console.Clear();
+                Console.ForegroundColor = ConsoleColor.DarkRed;
                 await Console.Out.WriteLineAsync($"Error listing user's songs (status code: {response.StatusCode}). " +
                     $"\nPress enter to return to menu.");
                 return;
@@ -78,7 +78,6 @@ namespace MusicProjektClient.Helpers
             Console.Clear();
             await MenuMethods.UserMenu(client, userId);
         }
-
         public static async Task ConnectSongToUser(HttpClient client, int userId)
         {
             await Console.Out.WriteAsync("Enter song ID to connect with: ");
@@ -90,6 +89,7 @@ namespace MusicProjektClient.Helpers
             if (!response.IsSuccessStatusCode)
             {
                 Console.Clear();
+                Console.ForegroundColor= ConsoleColor.DarkRed;
                 await Console.Out.WriteLineAsync($"Error connecting user with song (status code: {response.StatusCode}). " +
                     $"\nPress enter to return to menu.");
             }

@@ -5,8 +5,10 @@ using System.Net;
 
 namespace MusicProjekt.ApiHandler
 {
+    // GenreHandler provides HTTP request handling for genre-related operations
     public class GenreHandler
     {
+        // Retrieve all genres associated with a specific user
         public static IResult ListUsersGenres(IDbHelper dbHelper,  int userId)
         {
             try
@@ -21,6 +23,7 @@ namespace MusicProjekt.ApiHandler
 
 
         }
+        // Connect a user to a genre
         public static IResult ConnectUserToGenre(IDbHelper dbHelper, int userId, int genreId)
         {
             try

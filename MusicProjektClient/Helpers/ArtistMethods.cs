@@ -16,6 +16,7 @@ namespace MusicProjektClient.Helpers
 
             if (!response.IsSuccessStatusCode)
             {
+                Console.ForegroundColor = ConsoleColor.DarkRed;
                 await Console.Out.WriteLineAsync($"Error listing user's artists (status code: {response.StatusCode}). " +
                     $"\nPress enter to return to menu.");
                 return;
@@ -35,12 +36,23 @@ namespace MusicProjektClient.Helpers
             Console.Clear();
             await MenuMethods.UserMenu(client, userId);
         }
-
         public static async Task ConnectUserToArtist(HttpClient client, int userId)
         {
-            await Console.Out.WriteAsync("Enter artist ID to connect with: ");
-
-            int artistId = Convert.ToInt32(Console.ReadLine());
+            int artistId;
+            while (true)
+            {
+                Console.ForegroundColor= ConsoleColor.White;
+                await Console.Out.WriteAsync("Enter artist ID to connect with: ");
+                if(int.TryParse(Console.ReadLine(), out artistId))
+                {
+                   break;
+                }
+                else 
+                {
+                    Console.ForegroundColor= ConsoleColor.DarkRed;
+                    Console.WriteLine("Invalid artist ID. Please enter a valid number.");
+                }
+            }          
 
             var response = await client.PostAsync($"/user/{userId}/artist/{artistId}", null);
 
@@ -48,6 +60,7 @@ namespace MusicProjektClient.Helpers
             {
                 Console.Clear();
                 SoundMethods.PlayUnsuccessfullConnect();
+                Console.ForegroundColor = ConsoleColor.DarkRed;
                 await Console.Out.WriteLineAsync($"Error connecting user with artist (status code: {response.StatusCode}). " +
                     $"\nPress enter to return to menu.");
             }

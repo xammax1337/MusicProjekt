@@ -9,7 +9,7 @@ using Microsoft.IdentityModel.Protocols;
 
 namespace MusicProjekt.Services
 {
-
+    // IDbHelper interface defines methods for interacting with the database
     public interface IDbHelper
     {
         void AddUser(UserDto user);
@@ -19,6 +19,7 @@ namespace MusicProjekt.Services
         void ConnectUserToArtist(int userId, int songId);
 
         List<ListGenreViewModel> GetAllGenresForUser(int userId);
+
         void AddGenreForUser(int genreId, int userId);
 
         List<SongUserViewModel> ListUserSongs(int userId);
@@ -125,6 +126,7 @@ namespace MusicProjekt.Services
             }
         }
 
+        // Get all genres associated with a specific user
         public List<ListGenreViewModel> GetAllGenresForUser(int userId)
         {
 
@@ -147,6 +149,7 @@ namespace MusicProjekt.Services
 
         }
 
+        // Add a genre for a specific user
         public void AddGenreForUser(int genreId, int userId)
         {
             User? user = _context.Users
