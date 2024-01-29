@@ -29,7 +29,9 @@ namespace MusicProjektClient.Helpers
 
             foreach (var user in users)
             {
+                Console.ForegroundColor = ConsoleColor.DarkCyan;
                 Console.WriteLine($"User ID: {user.UserId}, username: {user.UserName}");
+                Console.ResetColor();
             }
            
             Console.ReadLine();
