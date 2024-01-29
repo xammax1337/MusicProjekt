@@ -14,13 +14,13 @@ namespace MusicProjektClient
     {
         static async Task Main(string[] args)
         {
-            Console.ForegroundColor = ConsoleColor.DarkBlue;
-            string ourText = "Greetings! What shall we do today?\n\nLoading...\n";
-            MenuMethods.PrintOneByOne(ourText);
-            Console.ResetColor();
-            Thread.Sleep(100);
+            //Console.ForegroundColor = ConsoleColor.DarkBlue;
+            //string ourText = "Greetings! What shall we do today?\n\nLoading...\n";
+            //MenuMethods.PrintOneByOne(ourText);
+            //Console.ResetColor();
+            //Thread.Sleep(100);
 
-            SoundMethods.PlayIntroToConsoleClientSound();
+            //SoundMethods.PlayIntroToConsoleClientSound();
 
             // Initialization and setup
             using (HttpClient client = new HttpClient())
@@ -143,6 +143,7 @@ namespace MusicProjektClient
                 await Console.Out.WriteAsync("Enter artist name: ");
                 Console.ResetColor();
 
+                Console.ForegroundColor=ConsoleColor.White;
                 string input = Console.ReadLine();
 
                 Console.ForegroundColor = ConsoleColor.DarkCyan;
@@ -164,6 +165,7 @@ namespace MusicProjektClient
                     Console.Clear();
                     Console.ForegroundColor = ConsoleColor.Green;
                     SoundMethods.PlayListingSound();
+                    //Console.ForegroundColor= ConsoleColor.Green;
                     await Console.Out.WriteLineAsync($"Successfully listing albums for artist (status code: {response.StatusCode}). " +
                         $"\nPress enter to return to menu.");
                     Console.ResetColor();

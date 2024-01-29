@@ -47,11 +47,13 @@ namespace MusicProjektClient.Helpers
             int artistId;
             while (true)
             {
-                Console.ForegroundColor= ConsoleColor.White;
+                Console.ForegroundColor= ConsoleColor.DarkGreen;
                 await Console.Out.WriteAsync("Enter artist ID to connect with: ");
-                if(int.TryParse(Console.ReadLine(), out artistId))
+                Console.ForegroundColor = ConsoleColor.White;
+                if (int.TryParse(Console.ReadLine(), out artistId))
                 {
-                   break;
+                    
+                    break;
                 }
                 else 
                 {
@@ -76,6 +78,7 @@ namespace MusicProjektClient.Helpers
             {
                 Console.Clear();
                 SoundMethods.PlaySuccessfulConnectSound();
+                Console.ForegroundColor = ConsoleColor.Green;
                 await Console.Out.WriteLineAsync($"Succesfully connected user with artist (status code: {response.StatusCode}). " +
                     $"\nPress enter to return to menu.");
             }
