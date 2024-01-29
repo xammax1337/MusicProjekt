@@ -16,6 +16,7 @@ namespace MusicProjektClient.Helpers
 
             if (!response.IsSuccessStatusCode)
             {
+                SoundMethods.PlayListingNotPossibleSound();
                 await Console.Out.WriteLineAsync($"Error listing user's (status code: {response.StatusCode}). " +
                     $"\nPress enter to return to menu");
                 return;
@@ -53,13 +54,14 @@ namespace MusicProjektClient.Helpers
             if (!response.IsSuccessStatusCode)
             {
                 Console.Clear();
+                SoundMethods.PlayUnsuccessfulAddSound();
                 await Console.Out.WriteLineAsync($"Error creating new user (status code: {response.StatusCode}). " +
                     $"\nPress enter to return to menu.");
             }
             else
             {
                 Console.Clear();
-                SoundMethods.PlaySuccessfullAdd();
+                SoundMethods.PlaySuccessfulAddSound();
                 await Console.Out.WriteLineAsync($"Succesfully created a user with username: {userName} (status code: {response.StatusCode}). " +
                     $"\nPress enter to return to menu.");
             }

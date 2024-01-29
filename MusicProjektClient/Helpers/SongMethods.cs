@@ -37,7 +37,7 @@ namespace MusicProjektClient.Helpers
             if (!response.IsSuccessStatusCode)
             {
                 Console.Clear();
-                SoundMethods.PlayUnsuccessfullAdd();
+                SoundMethods.PlayUnsuccessfulAddSound();
                 await Console.Out.WriteLineAsync($"Error adding song (status code: {response.StatusCode}). " +
                     $"\nPress enter to return to menu");
                 return;
@@ -45,7 +45,7 @@ namespace MusicProjektClient.Helpers
             else
             {
                 Console.Clear();
-                SoundMethods.PlaySuccessfullAdd();
+                SoundMethods.PlaySuccessfulAddSound();
                 await Console.Out.WriteLineAsync($"Added song (status code: {response.StatusCode}). " +
                     $"\nPress enter to return to menu.");
             }
@@ -60,11 +60,13 @@ namespace MusicProjektClient.Helpers
             {
                 Console.Clear();
                 Console.ForegroundColor = ConsoleColor.DarkRed;
+                SoundMethods.PlayListingNotPossibleSound();
                 await Console.Out.WriteLineAsync($"Error listing user's songs (status code: {response.StatusCode}). " +
                     $"\nPress enter to return to menu.");
                 return;
             }
 
+            SoundMethods.PlayListingSound();
             string responseData = await response.Content.ReadAsStringAsync();
 
             List<ListUserSongs> songs = JsonSerializer.Deserialize<List<ListUserSongs>>(responseData);
@@ -90,12 +92,14 @@ namespace MusicProjektClient.Helpers
             {
                 Console.Clear();
                 Console.ForegroundColor= ConsoleColor.DarkRed;
+                SoundMethods.PlayUnsuccessfulConnectSound();
                 await Console.Out.WriteLineAsync($"Error connecting user with song (status code: {response.StatusCode}). " +
                     $"\nPress enter to return to menu.");
             }
             else
             {
                 Console.Clear();
+                SoundMethods.PlaySuccessfulConnectSound();
                 await Console.Out.WriteLineAsync($"Succesfully connected user with song (status code: {response.StatusCode}). " +
                     $"\nPress enter to return to menu.");
             }

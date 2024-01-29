@@ -19,17 +19,19 @@ namespace MusicProjekt.ApiHandler
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            //A container for dependency injection, also to help with unit testing
             builder.Services.AddScoped<IDiscographyService, DiscographyService>();
 
             string connectionString = builder.Configuration.GetConnectionString("ApplicationContext");
             builder.Services.AddDbContext<ApplicationContext>(opt => opt.UseSqlServer(connectionString));
+            //Another container for dependency injection
             builder.Services.AddScoped<IDbHelper, DbHelper>();
             var app = builder.Build();
            
             app.MapGet("/", () => "Hello World!");
 
         
-
+            //Endpoints for API
             app.MapPost("/newUser", UserHandler.AddUser); 
             app.MapGet("/user", UserHandler.ListAllUsers); 
           
@@ -45,7 +47,7 @@ namespace MusicProjekt.ApiHandler
             
             app.MapPost("/song", SongHandler.AddSong);
 
-            //Test map
+            //GET call for external API. It lists a selected artist's discography.
             app.MapGet("album/{artist}", async (string artist, IDiscographyService DiscographyService) =>
             {
                 try

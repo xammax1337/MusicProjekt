@@ -8,31 +8,43 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Sounds\131660__bertrof__game-sound-correct.wav" />
-    <None Remove="Sounds\253177__suntemple__retro-accomplished-sfx.wav" />
-    <None Remove="Sounds\29938__halleck__record_scratch_short.wav" />
-    <None Remove="Sounds\45654__simon_lacelle__dun-dun-dun.wav" />
+    <None Remove="Sounds\142608__autistic-lucario__error.wav" />
+    <None Remove="Sounds\15419__pagancow__dorm-door-opening.wav" />
+    <None Remove="Sounds\259172__xtrgamr__uhoh.wav" />
+    <None Remove="Sounds\29938__halleck__record_scratch_short %28mp3cut.net%29.wav" />
+    <None Remove="Sounds\320655__rhodesmas__level-up-01.wav" />
+    <None Remove="Sounds\45654__simon_lacelle__dun-dun-dun %28mp3cut.net%29.wav" />
     <None Remove="Sounds\515615__mrthenoronha__8-bit-game-theme %28mp3cut.net%29 %281%29.wav" />
     <None Remove="Sounds\609336__kenneth_cooney__completed.wav" />
+    <None Remove="Sounds\624878__sonically_sound__old-video-game-4.wav" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Sounds\131660__bertrof__game-sound-correct.wav">
+    <Content Include="Sounds\142608__autistic-lucario__error.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Sounds\253177__suntemple__retro-accomplished-sfx.wav">
+    <Content Include="Sounds\15419__pagancow__dorm-door-opening.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Sounds\29938__halleck__record_scratch_short.wav">
+    <Content Include="Sounds\259172__xtrgamr__uhoh.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Sounds\45654__simon_lacelle__dun-dun-dun.wav">
+    <Content Include="Sounds\29938__halleck__record_scratch_short (mp3cut.net).wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Sounds\320655__rhodesmas__level-up-01.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Sounds\45654__simon_lacelle__dun-dun-dun (mp3cut.net).wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Sounds\515615__mrthenoronha__8-bit-game-theme (mp3cut.net) (1).wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Sounds\609336__kenneth_cooney__completed.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Sounds\624878__sonically_sound__old-video-game-4.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

@@ -80,7 +80,6 @@ namespace MusicProjektClient.Helpers
 
 
                     await SongMethods.ListUserSongs(client, userId);
-                    //await SongMethods.ListUserSongs(client, this, userId); 
                     break;
                 case "6":
                     Console.Clear();
@@ -94,16 +93,18 @@ namespace MusicProjektClient.Helpers
                     ConsoleColor originalColor2 = Console.ForegroundColor;
                     Console.ForegroundColor = ConsoleColor.DarkGreen;
                     Console.ResetColor();
+                    SoundMethods.PlayReturnToMainMenuSound();
                     Console.WriteLine("Press enter to return to main menu.");
                     Console.ForegroundColor = originalColor2;
 
                     return;
                 default:
-                    SoundMethods.PlayWrongInput();
+
 
                     //Save the orginal color
                     ConsoleColor originalColor1 = Console.ForegroundColor;
                     Console.ForegroundColor = ConsoleColor.DarkRed;
+                    SoundMethods.PlayWrongInputSound();
                     Console.WriteLine("Eek, wrong input!");
                     Console.WriteLine("Press enter to return to menu.");
                     Console.ReadLine();
@@ -120,8 +121,10 @@ namespace MusicProjektClient.Helpers
             if (!response.IsSuccessStatusCode)
             {
                 Console.Clear();
+
                 Console.ForegroundColor = ConsoleColor.DarkRed;
-                await Console.Out.WriteLineAsync($"Error listing user's (status code: {response.StatusCode}). " +
+
+                await Console.Out.WriteLineAsync($"Error finding user (status code: {response.StatusCode}). " +
                     $"\nPress enter to return to menu.");
                 return false;
             }
@@ -133,7 +136,7 @@ namespace MusicProjektClient.Helpers
             return users.Any(user => user.UserId == userId);
         }
 
-        // Prints text one character at a time with a delay
+        //Will print out a letter at a time with 100 milliseconds of pause in between
         public static void PrintOneByOne(string text)
         {
             foreach (char c in text)
