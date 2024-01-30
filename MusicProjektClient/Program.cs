@@ -38,13 +38,13 @@ namespace MusicProjektClient
                     Console.WriteLine("[4] Add new song");
                     Console.WriteLine("[5] View artist's albums");
                     Console.WriteLine("[Q] Quit program");
-                    Console.ResetColor() ;
+                    Console.ResetColor();
 
                     string input = Console.ReadLine();
 
                     if (input.ToLower() == "q")
                     {
-                        break; 
+                        break;
                     }
 
                     switch (input)
@@ -59,7 +59,7 @@ namespace MusicProjektClient
                             break;
 
                         case "2":
-                            Console.ForegroundColor= ConsoleColor.DarkCyan;
+                            Console.ForegroundColor = ConsoleColor.DarkCyan;
                             Console.Clear();
                             Console.WriteLine("Select a user");
                             Console.Write("Enter user ID: ");
@@ -144,7 +144,7 @@ namespace MusicProjektClient
                 await Console.Out.WriteAsync("Enter artist name: ");
                 Console.ResetColor();
 
-                Console.ForegroundColor=ConsoleColor.White;
+                Console.ForegroundColor = ConsoleColor.White;
                 string input = Console.ReadLine();
 
                 Console.ForegroundColor = ConsoleColor.DarkCyan;
