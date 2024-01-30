@@ -33,7 +33,7 @@ namespace MusicProjektClient.Helpers
                 Console.WriteLine($"User ID: {user.UserId}, username: {user.UserName}");
                 Console.ResetColor();
             }
-           
+
             Console.ReadLine();
         }
 
@@ -58,6 +58,7 @@ namespace MusicProjektClient.Helpers
             {
                 Console.Clear();
                 SoundMethods.PlayUnsuccessfulAddSound();
+                Console.ForegroundColor = ConsoleColor.DarkRed;
                 await Console.Out.WriteLineAsync($"Error creating new user (status code: {response.StatusCode}). " +
                     $"\nPress enter to return to menu.");
             }

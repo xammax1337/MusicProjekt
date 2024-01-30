@@ -52,7 +52,7 @@ namespace MusicProjektClient.Helpers
             int genreId;
             while (true)
             {
-             
+
                 Console.ForegroundColor = ConsoleColor.White;
                 if (int.TryParse(Console.ReadLine(), out genreId))
                 {
@@ -61,11 +61,12 @@ namespace MusicProjektClient.Helpers
                 }
                 else
                 {
+                    SoundMethods.PlayWrongInputSound();
                     Console.ForegroundColor = ConsoleColor.DarkRed;
                     Console.WriteLine("Invalid genre ID. Please enter a valid number.");
                     Console.WriteLine("Press enter to return to menu");
                     return;
-                   
+
                 }
 
             }

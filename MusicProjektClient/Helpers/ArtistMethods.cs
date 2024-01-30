@@ -47,20 +47,22 @@ namespace MusicProjektClient.Helpers
             int artistId;
             while (true)
             {
-                Console.ForegroundColor= ConsoleColor.DarkGreen;
+                Console.ForegroundColor = ConsoleColor.DarkGreen;
                 await Console.Out.WriteAsync("Enter artist ID to connect with: ");
                 Console.ForegroundColor = ConsoleColor.White;
                 if (int.TryParse(Console.ReadLine(), out artistId))
                 {
-                    
+
                     break;
                 }
-                else 
+                else
                 {
-                    Console.ForegroundColor= ConsoleColor.DarkRed;
-                    Console.WriteLine("Invalid artist ID. Please enter a valid number.");
+                    SoundMethods.PlayWrongInputSound();
+                    Console.ForegroundColor = ConsoleColor.DarkRed;
+                    Console.WriteLine("Invalid artist ID. Please enter a valid number.\nPress enter to return to menu.");
+                    return;
                 }
-            }          
+            }
 
             var response = await client.PostAsync($"/user/{userId}/artist/{artistId}", null);
 
@@ -70,7 +72,7 @@ namespace MusicProjektClient.Helpers
 
                 Console.ForegroundColor = ConsoleColor.DarkRed;
                 SoundMethods.PlayUnsuccessfulConnectSound();
-              
+
                 await Console.Out.WriteLineAsync($"Error connecting user with artist (status code: {response.StatusCode}). " +
                     $"\nPress enter to return to menu.");
             }
