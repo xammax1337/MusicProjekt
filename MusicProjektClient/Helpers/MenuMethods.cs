@@ -17,11 +17,12 @@ namespace MusicProjektClient.Helpers
             ConsoleColor originalColor = Console.ForegroundColor;
             Console.ForegroundColor = ConsoleColor.DarkYellow;
             Console.WriteLine($"Current user ID: {userId}");
+            Console.ForegroundColor = originalColor;
             Console.WriteLine($"Now choose an option for this user:");
             Console.WriteLine($"--------------------------");
 
 
-            Console.ForegroundColor = ConsoleColor.DarkGreen;
+            Console.ForegroundColor = ConsoleColor.Yellow;
             // Display user menu options
 
             Console.WriteLine("[1] List user's artists");

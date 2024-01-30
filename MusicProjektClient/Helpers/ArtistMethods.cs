@@ -47,7 +47,7 @@ namespace MusicProjektClient.Helpers
             int artistId;
             while (true)
             {
-                Console.ForegroundColor = ConsoleColor.DarkGreen;
+                Console.ForegroundColor = ConsoleColor.DarkCyan;
                 await Console.Out.WriteAsync("Enter artist ID to connect with: ");
                 Console.ForegroundColor = ConsoleColor.White;
                 if (int.TryParse(Console.ReadLine(), out artistId))
@@ -57,6 +57,7 @@ namespace MusicProjektClient.Helpers
                 }
                 else
                 {
+                    Console.Clear();
                     SoundMethods.PlayWrongInputSound();
                     Console.ForegroundColor = ConsoleColor.DarkRed;
                     Console.WriteLine("Invalid artist ID. Please enter a valid number.\nPress enter to return to menu.");
