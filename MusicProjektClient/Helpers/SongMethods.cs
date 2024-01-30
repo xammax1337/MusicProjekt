@@ -12,7 +12,7 @@ namespace MusicProjektClient.Helpers
     {
         public static async Task AddSong(HttpClient client)
         {
-
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
             await Console.Out.WriteAsync("Enter song title: ");
             Console.ForegroundColor = ConsoleColor.White;
             string title = Console.ReadLine();
@@ -51,6 +51,7 @@ namespace MusicProjektClient.Helpers
                 }
                 else
                 {
+                    Console.Clear();
                     SoundMethods.PlayWrongInputSound();
                     Console.ForegroundColor = ConsoleColor.DarkRed;
                     Console.WriteLine("Invalid genre ID. Please enter a valid number.\n Press enter to return to menu.");
@@ -126,7 +127,7 @@ namespace MusicProjektClient.Helpers
         }
         public static async Task ConnectSongToUser(HttpClient client, int userId)
         {
-            Console.ForegroundColor = ConsoleColor.DarkGreen;
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
             await Console.Out.WriteAsync("Enter song ID to connect with: ");
             Console.ForegroundColor = ConsoleColor.White;
 
@@ -141,6 +142,7 @@ namespace MusicProjektClient.Helpers
                 }
                 else
                 {
+                    Console.Clear();
                     SoundMethods.PlayWrongInputSound();
                     Console.ForegroundColor = ConsoleColor.DarkRed;
                     Console.WriteLine("Invalid song ID. Please enter a valid number.");
