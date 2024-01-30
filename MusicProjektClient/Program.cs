@@ -131,6 +131,7 @@ namespace MusicProjektClient
                             SoundMethods.PlayWrongInputSound();
                             Console.WriteLine("Nah, invalid input, press enter to return to main menu.");
                             Console.ResetColor();
+                            Console.ReadLine();
                             break;
                     }
                 }
